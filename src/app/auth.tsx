@@ -2,6 +2,8 @@ import NextAuth, { DefaultSession }  from "next-auth"
 import "next-auth/jwt"
 import { ZodError } from "zod"
 import Credentials from "next-auth/providers/credentials"
+import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import { signInSchema } from "~/lib/zod"
 import { userService } from "~/services/UserService"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
@@ -19,6 +21,14 @@ export const {
 } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET
+    }),    
     Credentials({
       // You can specify which fields should be submitted, by adding keys to the `credentials` object.
       // e.g. domain, username, password, 2FA token, etc.

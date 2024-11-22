@@ -6,11 +6,32 @@ export function Form({
   action: any;
   children: React.ReactNode;
 }) {
+  
+  const input_style =
+    "form-control block w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none";
+
   return (
     <form
       action={action}
       className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
     >
+      <div>
+        <label
+          htmlFor="name"
+          className="block text-xs text-gray-600 uppercase"
+        >
+          Email Address
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Name..."
+          autoComplete="email"
+          required
+          className={`${input_style}`}
+        />
+      </div>      
       <div>
         <label
           htmlFor="email"
@@ -22,10 +43,10 @@ export function Form({
           id="email"
           name="email"
           type="email"
-          placeholder="user@acme.com"
+          placeholder="Email address..."
           autoComplete="email"
           required
-          className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+          className={`${input_style}`}
         />
       </div>
       <div>
@@ -39,8 +60,25 @@ export function Form({
           id="password"
           name="password"
           type="password"
+          placeholder="*************"
           required
-          className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+          className={`${input_style}`}
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="repeat-pass"
+          className="block text-xs text-gray-600 uppercase"
+        >
+          Repeat Password
+        </label>
+        <input
+          id="repeat-pass"
+          name="repeat-pass"
+          type="password"
+          placeholder="*************"
+          required
+          className={`${input_style}`}
         />
       </div>
       {children}
