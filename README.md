@@ -34,7 +34,7 @@ $touch tsconfig.json prisma/schema.prisma
   ],
 ```
 
-#### schema.prisma
+#### prisma/schema.prisma
 
 ```js
 datasource db {
