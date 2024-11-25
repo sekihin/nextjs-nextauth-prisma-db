@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest, _next: NextFetchEvent) {
   if (matchesProtectedPath) {
     const token = await getToken({ req: request });
     if (!token) {
-      const url = new URL("/signin", request.url);
+      const url = new URL("/login", request.url);
       url.searchParams.set("callbackUrl", encodeURI(request.url));
       return NextResponse.redirect(url);
     }

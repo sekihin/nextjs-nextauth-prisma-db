@@ -1,5 +1,1 @@
-{
-  "node": {},
-  "edge": {},
-  "encryptionKey": "IWINEJwEQBFg++lOHSNcWhNad1BR7Mi+jstXi8wkRKU="
-}
+{"node":{"40701ba594f702e3206ee6d43e3a8a2ebfe8deb1e6":{"workers":{"app/register/page":{"moduleId":"60772","async":false}},"layer":{"app/register/page":"rsc"}},"00d9f26aaf3c3fc3820f486372e7332384849109be":{"workers":{"app/admin/page":{"moduleId":"57217","async":false}},"layer":{"app/admin/page":"rsc"}}},"edge":{},"encryptionKey":"B/UhqAnJg5r7GWXUS1ZsI9wH7Tv1auYoXD0vJsF/CRQ="}

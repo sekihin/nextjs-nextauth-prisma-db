@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React from "react";
 import { Metadata } from 'next'
-import { auth, signOut } from '~/app/auth'
+import { signOut, useSession } from 'next-auth/react'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function AdminPage() {
 
-  const session = await auth()
+  const { data: session, status } = useSession()
 
   return (
     <div className="container">

@@ -49,9 +49,10 @@ export const getUserFromDb = async (params) => {
       const user = await prisma.users.create({
         data: {
           id: uuidv4(),
+          name: String(params?.name),
           email: String(params?.email),
           password: String(params?.password),
-          roles: "admin"
+          role: "admin"
         },
       });
       return user
