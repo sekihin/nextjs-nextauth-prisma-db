@@ -1,24 +1,25 @@
 // services/UserService.ts
-import { User } from "next-auth";
-import { IUserService } from "./IUserService";
+import { User } from 'next-auth';
 
 // Your own logic for dealing with plaintext password strings; be careful!
-import { saltAndHashPassword } from "~/lib/zod"
-import { getUserFromDb } from "~/db/users"
+import { saltAndHashPassword } from '@/lib/zod';
+
+import { getUserFromDb } from '@/db/users';
+
+import { IUserService } from './IUserService';
 
 export class InMemoryUserService implements IUserService {
-  signInCredentials(email: string, password: string): User | Promise<User> {
-    
-    // logic to salt and hash password
-    password  = saltAndHashPassword(password)
+  async signInCredentials(email: string, password: string): Promise<User> {
+    // await the password hashing
+    const hashedPassword = await saltAndHashPassword(password);
 
-    // logic to verify if the user exists
-    const user = getUserFromDb({email, password})
+    // await the user lookup
+    const user = await getUserFromDb({ email, password: hashedPassword });
 
     if (!user) {
-      throw new Error("Invalid email or password");
+      throw new Error('Invalid email or password');
     }
-    return user;
+    return user as User;
   }
 }
 

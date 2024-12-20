@@ -1,51 +1,77 @@
 'use client';
 
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import { styled } from '@mui/material/styles';
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
-import { useFormStatus } from 'react-dom'
+import { useFormStatus } from 'react-dom';
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    display: 'flex',
-    height: '40px',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: '4px',
-    border: `1px solid ${theme.palette.primary.main}`,
-    textTransform: 'none',
-    fontSize: '14px',
-    transition: 'all 0.3s',
-    '&:focus': {
-      outline: 'none',
-    },
-  },
-  spinner: {
-    marginLeft: theme.spacing(1),
+const baseButtonStyles = styled(Button)(({ theme }) => ({
+  height: '56px',
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textTransform: 'none',
+  fontSize: '14px',
+  '&:focus': {
+    outline: 'none',
   },
 }));
 
-export function SubmitButton({ children }: { children: React.ReactNode }) {
-  const { pending } = useFormStatus();
-  const classes = useStyles();
+const SignInButton = styled(Button)(({ theme }) => ({
+  ...baseButtonStyles,
+  backgroundColor: '#6c63ff',
+  '&:hover': {
+    backgroundColor: '#847dff',
+  },
+}));
 
-  return (
-    <Button
-      type={pending ? 'button' : 'submit'}
+const SignUpButton = styled(Button)(({ theme }) => ({
+  ...baseButtonStyles,
+  backgroundColor: '#ffffff',
+  color: '#6c63ff',
+  border: '2px solid #6c63ff',
+  '&:hover': {
+    backgroundColor: '#f5f4ff',
+    borderColor: '#847dff',
+    color: '#847dff',
+  },
+}));
+
+export function SubmitButton({
+  children,
+  type = 'submit',
+}: {
+  children: React.ReactNode;
+  type?: 'submit' | 'button';
+}) {
+  const { pending } = useFormStatus();
+
+  return type == 'submit' ? (
+    <SignInButton
+      fullWidth
+      type={pending ? 'button' : type}
       disabled={pending}
-      className={classes.button}
-      variant="contained"
-      color="primary"
+      variant='contained'
     >
       {children}
-      {pending && (
-        <CircularProgress size={16} className={classes.spinner} />
-      )}
-      <span aria-live="polite" className="sr-only" role="status">
+      {pending && <CircularProgress size={16} sx={{ ml: 1 }} />}
+      <span aria-live='polite' className='sr-only' role='status'>
         {pending ? 'Loading' : 'Submit form'}
       </span>
-    </Button>
+    </SignInButton>
+  ) : (
+    <SignUpButton
+      fullWidth
+      type={pending ? 'button' : type}
+      disabled={pending}
+      variant='outlined'
+    >
+      {children}
+      {pending && <CircularProgress size={16} sx={{ ml: 1 }} />}
+      <span aria-live='polite' className='sr-only' role='status'>
+        {pending ? 'Loading' : 'Submit form'}
+      </span>
+    </SignUpButton>
   );
 }

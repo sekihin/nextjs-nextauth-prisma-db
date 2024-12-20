@@ -1,37 +1,39 @@
-import NextAuth  from "next-auth"
-import "next-auth/jwt"
-import GitHubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import prisma from '~/lib/prisma';
-import { userService } from '~/services/UserService'
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GitHubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
+import 'next-auth/jwt';
+
+import prisma from '@/lib/prisma';
+
+import { userService } from '@/services/UserService';
 
 if (!process.env.AUTH_SECRET) {
-  throw new Error("Please provide process.env.AUTH_SECRET");
+  throw new Error('Please provide process.env.AUTH_SECRET');
 }
 
-export const authOptions ={
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET
+      clientSecret: process.env.GITHUB_SECRET,
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET
-    }),        
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     CredentialsProvider({
-      name: "Credentials",
-      id: "credentials",
+      name: 'Credentials',
+      id: 'credentials',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials) {
-          throw new Error("No credentials.");
+          throw new Error('No credentials.');
         }
         const { email, password } = credentials;
         return userService.signInCredentials(email, password);
@@ -78,4 +80,4 @@ export const authOptions ={
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }; 
+export { handler as GET, handler as POST };

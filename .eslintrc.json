@@ -6,6 +6,8 @@
 	],
 	"rules": {
 		"react/display-name": "off",
+		"react/prop-types": "off",
+		"react/react-in-jsx-scope": "off",
 		"@next/next/no-img-element": "off",
 		"react/no-unescaped-entities": "off",
 		"import/no-anonymous-default-export": "off",
@@ -45,7 +47,8 @@
 		]
 	},
 	"plugins": [
-		"import"
+		"@typescript-eslint",
+		"react"
 	],
 	"settings": {
 		"import/parsers": {

@@ -1,12 +1,13 @@
 import React from 'react';
 import './globals.css';
 import { GeistSans } from 'geist/font/sans';
+import { Metadata } from 'next'
 
 const title = 'Next.js + Postgres Auth Starter';
 const description =
   'This is a Next.js starter kit that uses NextAuth.js for simple email + password login and a Postgres database to persist the data.';
 
-export const metadata = {
+export const metadata: Metadata = {
   title,
   description,
   twitter: {

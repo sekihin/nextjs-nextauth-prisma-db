@@ -1,34 +1,49 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path')
-const Dotenv = require("dotenv-webpack");
-
 /** @type {import('next').NextConfig} */
+const nextConfig = {
+  eslint: {
+    dirs: ['src'],
+  },
 
-// Remove this if you're not using Fullcalendar features
+  reactStrictMode: true,
 
-module.exports = {
-  trailingSlash: true,
-  reactStrictMode: false,
-  webpack: config => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      "~": path.resolve(__dirname, './src')
-    };
+  // Uncoment to add domain whitelist
+  // images: {
+  //   domains: [
+  //     'res.cloudinary.com',
+  //   ],
+  // },
 
-    config.plugins = [
-      ...config.plugins,
+  webpack(config) {
+    // Grab the existing rule that handles SVG imports
+    const fileLoaderRule = config.module.rules.find((rule) =>
+      rule.test?.test?.('.svg')
+    );
 
-      /*
-      new Dotenv({
-        path:
-        process.env.NODE_ENV === "development"
-          ? "./.env.development"
-          : "./.env.production",        
-        systemvars: true
-      })
-      */
-    ];
+    config.module.rules.push(
+      // Reapply the existing rule, but only for svg imports ending in ?url
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/, // *.svg?url
+      },
+      // Convert all other *.svg imports to React components
+      {
+        test: /\.svg$/i,
+        issuer: { not: /\.(css|scss|sass)$/ },
+        resourceQuery: { not: /url/ }, // exclude if *.svg?url
+        loader: '@svgr/webpack',
+        options: {
+          dimensions: false,
+          titleProp: true,
+        },
+      }
+    );
 
-    return config
-  }
-}
+    // Modify the file loader rule to ignore *.svg, since we have it handled now.
+    fileLoaderRule.exclude = /\.svg$/i;
+
+    return config;
+  },
+};
+
+module.exports = nextConfig;
