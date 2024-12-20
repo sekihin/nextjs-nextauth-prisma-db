@@ -1,43 +1,51 @@
 'use client';
 
 import React from 'react';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
 import { useFormStatus } from 'react-dom'
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    display: 'flex',
+    height: '40px',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '4px',
+    border: `1px solid ${theme.palette.primary.main}`,
+    textTransform: 'none',
+    fontSize: '14px',
+    transition: 'all 0.3s',
+    '&:focus': {
+      outline: 'none',
+    },
+  },
+  spinner: {
+    marginLeft: theme.spacing(1),
+  },
+}));
 
 export function SubmitButton({ children }: { children: React.ReactNode }) {
   const { pending } = useFormStatus();
+  const classes = useStyles();
 
   return (
-    <button
+    <Button
       type={pending ? 'button' : 'submit'}
       disabled={pending}
-      className="flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none"
+      className={classes.button}
+      variant="contained"
+      color="primary"
     >
       {children}
       {pending && (
-        <svg
-          className="animate-spin ml-2 h-4 w-4 text-black"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          />
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-          />
-        </svg>
+        <CircularProgress size={16} className={classes.spinner} />
       )}
       <span aria-live="polite" className="sr-only" role="status">
         {pending ? 'Loading' : 'Submit form'}
       </span>
-    </button>
+    </Button>
   );
 }
